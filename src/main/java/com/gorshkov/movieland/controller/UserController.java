@@ -21,6 +21,7 @@ import static com.gorshkov.movieland.util.FileReaderUtil.getRowsFromUrl;
 public class UserController {
 
     private static final String URL_STRING = "https://trello.com/1/cards/5c7d3c9c8d6ddf776c2d3dde/attachments/5c7d3c9d8d6ddf776c2d3e11/download/user.txt";
+    private static final int LINES_NUMBER = 3;
 
     private final UserService userService;
 
@@ -29,15 +30,15 @@ public class UserController {
 
         List<String> rows = getRowsFromUrl(URL_STRING);
         List<User> users = new ArrayList<>();
-        User user = new User();
+        User user = null;
 
         for (int i = 0; i < rows.size(); i++) {
-            if (i % 3 == 0) {
+            if (i % LINES_NUMBER == 0) {
                 user = new User();
                 user.setUserName(rows.get(i));
-            } else if (i % 3 == 1) {
+            } else if (i % LINES_NUMBER == 1) {
                 user.setEmail(rows.get(i));
-            } else if (i % 3 == 2) {
+            } else {
                 user.setPassword(rows.get(i));
                 users.add(user);
                 log.info("user: {}", user);
@@ -48,7 +49,6 @@ public class UserController {
     }
 
     @GetMapping()
-
     public Iterable<User> getAll(Model model) {
 
         Iterable<User> users = userService.getAllUsers();

@@ -59,7 +59,7 @@ public class Movie implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "movie_id = " + movieId + ", " +
+                "movieId = " + movieId + ", " +
                 "movieName = " + movieName + ", " +
                 "year = " + year + ", " +
                 "county = " + county + ", " +

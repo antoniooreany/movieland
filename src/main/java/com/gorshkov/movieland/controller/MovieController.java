@@ -24,6 +24,7 @@ import static com.gorshkov.movieland.util.FileReaderUtil.getRowsFromUrl;
 public class MovieController {
 
     private static final String URL_STRING = "https://trello.com/1/cards/5c7d3c9c8d6ddf776c2d3dde/attachments/5c7d3c9d8d6ddf776c2d3e0b/download/movie.txt";
+    private static final int LINES_NUMBER = 7;
 
     private final MovieService movieService;
 
@@ -32,32 +33,32 @@ public class MovieController {
 
         List<String> rows = getRowsFromUrl(URL_STRING);
         List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
+        Movie movie = null;
 
-        for (int i = 0; i < rows.size(); i++) {
-            if (i % 7 == 0) {
+        for (int currentRowNumber = 0; currentRowNumber < rows.size(); currentRowNumber++) {
+            if (currentRowNumber % LINES_NUMBER == 0) {
                 movie = new Movie();
-                movie.setMovieName(rows.get(i));
-            } else if (i % 7 == 1) {
-                movie.setYear(Integer.parseInt(rows.get(i)));
-            } else if (i % 7 == 2) {
-                movie.setCounty(rows.get(i));
-            } else if (i % 7 == 3) {
-                String[] split = rows.get(i).split(" ,");
-                Set<Genre> set = new HashSet<>();
+                movie.setMovieName(rows.get(currentRowNumber));
+            } else if (currentRowNumber % LINES_NUMBER == 1) {
+                movie.setYear(Integer.parseInt(rows.get(currentRowNumber)));
+            } else if (currentRowNumber % LINES_NUMBER == 2) {
+                movie.setCounty(rows.get(currentRowNumber));
+            } else if (currentRowNumber % LINES_NUMBER == 3) {
+                String[] genresString = rows.get(currentRowNumber).split(" ,");
+                Set<Genre> genres = new HashSet<>();
                 Genre genre = new Genre();
-                for (String s : split) {
-                    genre.setGenre(s);
-                    set.add(genre);
+                for (String genreString : genresString) {
+                    genre.setGenre(genreString);
+                    genres.add(genre);
                 }
-                movie.setGenres(set);
-            } else if (i % 7 == 4) {
-                movie.setDescription(rows.get(i));
-            } else if (i % 7 == 5) {
-                String row = rows.get(i).split(":")[1];
+                movie.setGenres(genres);
+            } else if (currentRowNumber % LINES_NUMBER == 4) {
+                movie.setDescription(rows.get(currentRowNumber));
+            } else if (currentRowNumber % LINES_NUMBER == 5) {
+                String row = rows.get(currentRowNumber).split(":")[1];
                 movie.setRating(Double.parseDouble(row));
-            } else if (i % 7 == 6) {
-                String row = rows.get(i).split(":")[1];
+            } else {
+                String row = rows.get(currentRowNumber).split(":")[1];
                 movie.setPrice(Double.parseDouble(row));
                 movies.add(movie);
                 log.info("movie: {}", movie);

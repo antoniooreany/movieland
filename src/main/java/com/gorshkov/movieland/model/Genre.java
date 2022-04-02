@@ -53,7 +53,7 @@ public class Genre implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "genre_id = " + genreId + ", " +
+                "genreId = " + genreId + ", " +
                 "genre = " + genre + ")";
     }
 }

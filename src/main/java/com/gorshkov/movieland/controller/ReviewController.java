@@ -21,6 +21,7 @@ import static com.gorshkov.movieland.util.FileReaderUtil.getRowsFromUrl;
 public class ReviewController {
 
     private static final String URL_STRING = "https://trello.com/1/cards/5c7d3c9c8d6ddf776c2d3dde/attachments/5c7d3c9d8d6ddf776c2d3e0f/download/review.txt";
+    private static final int LINES_NUMBER = 3;
 
     private final ReviewService reviewService;
 
@@ -29,15 +30,15 @@ public class ReviewController {
 
         List<String> rows = getRowsFromUrl(URL_STRING);
         List<Review> reviews = new ArrayList<>();
-        Review review = new Review();
+        Review review = null;
 
         for (int i = 0; i < rows.size(); i++) {
-            if (i % 3 == 0) {
+            if (i % LINES_NUMBER == 0) {
                 review = new Review();
                 review.setMovieName(rows.get(i));
-            } else if (i % 3 == 1) {
+            } else if (i % LINES_NUMBER == 1) {
                 review.setUserName(rows.get(i));
-            } else if (i % 3 == 2) {
+            } else {
                 review.setReview(rows.get(i));
                 reviews.add(review);
                 log.info("user: {}", review);

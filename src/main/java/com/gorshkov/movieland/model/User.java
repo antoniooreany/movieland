@@ -47,7 +47,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "user_id = " + userId + ", " +
+                "userId = " + userId + ", " +
                 "userName = " + userName + ", " +
                 "email = " + email + ", " +
                 "password = " + password + ")";

@@ -5,6 +5,8 @@ import com.gorshkov.movieland.repository.PosterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PosterService {
@@ -15,8 +17,11 @@ public class PosterService {
         return posterRepository.save(poster);
     }
 
-    public Iterable<Poster> getAllPosters() {
-        return posterRepository.findAll();
+    public Iterable<Poster> saveAll(List<Poster> posters) {
+        return posterRepository.saveAll(posters);
     }
 
+    public Iterable<Poster> getAll() {
+        return posterRepository.findAll();
+    }
 }

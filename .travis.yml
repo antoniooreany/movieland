@@ -1,0 +1,24 @@
+language: java
+
+matrix:
+  include:
+    - jdk: openjdk8
+      os: linux
+    - jdk: openjdk11
+      os: osx
+    - jdk: oraclejdk8
+
+before_script: sudo chmod +x mvn
+
+script:
+  - sudo ./mvnw clean install -B
+  - sudo ./mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - sudo ./mvn clean package -X
+  - sudo ./mvn test
+  - sudo ./mvn test
+  - sudo ./mvn run -8080:8080 java-docker
+  - sudo docker build --tag java-docker .
+  - sudo docker images
+  - sudo docker run -8080:8080 java-docker
+  - sudo docker-machine ls
+  - sudo ./heroku locate web

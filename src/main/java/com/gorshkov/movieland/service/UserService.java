@@ -5,6 +5,8 @@ import com.gorshkov.movieland.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -17,5 +19,9 @@ public class UserService {
 
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Iterable<User> saveAll(List<User> users) {
+        return userRepository.saveAll(users);
     }
 }

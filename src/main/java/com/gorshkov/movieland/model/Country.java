@@ -6,29 +6,28 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name="review")
-public class Review {
-
+@Table(name = "country")
+public class Country {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    private Long reviewId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long countryId;
+    private String name;
 
-    @Column(name = "text")
-    private String text;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "countries")
+    private Set<Movie> movies = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -38,8 +37,8 @@ public class Review {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
-        Review review = (Review) o;
-        return reviewId != null && Objects.equals(reviewId, review.reviewId);
+        Country country = (Country) o;
+        return countryId != null && Objects.equals(countryId, country.countryId);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class Review {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "reviewId = " + reviewId + ", " +
-                "text = " + text + ")";
+                "countryId = " + countryId + ", " +
+                "name = " + name + ")";
     }
 }

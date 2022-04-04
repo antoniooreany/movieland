@@ -5,6 +5,8 @@ import com.gorshkov.movieland.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -17,5 +19,9 @@ public class ReviewService {
 
     public Iterable<Review> getAllReviews() {
         return reviewRepository.findAll();
+    }
+
+    public Iterable<Review> saveAll(List<Review> reviews) {
+        return reviewRepository.saveAll(reviews);
     }
 }

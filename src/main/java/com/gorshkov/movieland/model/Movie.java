@@ -1,5 +1,6 @@
 package com.gorshkov.movieland.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -7,27 +8,41 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @RequiredArgsConstructor
+@Table(name = "movie")
 public class Movie implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long movieId;
-    private String movieName;
-    private int year;
-    private String county;
-
-    @Column(name = "description")
-    private String description;
+    private String nameNative;
+    private String nameRussian;
+    private String yearOfRelease;
     private double rating;
     private double price;
+    @Column(name = "description")
+    private String description;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "movie_countries",
+            joinColumns = {@JoinColumn(name = "movie_id")},
+            inverseJoinColumns = {@JoinColumn(name = "country_id")})
+    @JsonIgnore
+    private List<Country> countries;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -37,7 +52,8 @@ public class Movie implements Serializable {
     @JoinTable(name = "movie_genres",
             joinColumns = {@JoinColumn(name = "movie_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> genres = new HashSet<>();
+    @JsonIgnore
+    private List<Genre> genres;
 
     @Override
     public boolean equals(Object o) {
@@ -60,11 +76,11 @@ public class Movie implements Serializable {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "movieId = " + movieId + ", " +
-                "movieName = " + movieName + ", " +
-                "year = " + year + ", " +
-                "county = " + county + ", " +
-                "description = " + description + ", " +
+                "nameNative = " + nameNative + ", " +
+                "nameRussian = " + nameRussian + ", " +
+                "yearOfRelease = " + yearOfRelease + ", " +
                 "rating = " + rating + ", " +
-                "price = " + price + ")";
+                "price = " + price + ", " +
+                "description = " + description + ")";
     }
 }

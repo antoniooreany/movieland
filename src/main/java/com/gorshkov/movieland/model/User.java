@@ -7,25 +7,29 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
 @RequiredArgsConstructor
+@Table(name = "users")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;
-    private String userName;
+    private String nickname;
     private String email;
     private String password;
+    @OneToOne
+    @JoinColumn(name = "poster_id")
+    private Poster poster;
 
-    @OneToMany
-    private List<Review> reviews;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -48,8 +52,9 @@ public class User implements Serializable {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "userId = " + userId + ", " +
-                "userName = " + userName + ", " +
+                "nickname = " + nickname + ", " +
                 "email = " + email + ", " +
-                "password = " + password + ")";
+                "password = " + password + ", " +
+                "poster = " + poster + ")";
     }
 }

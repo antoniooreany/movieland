@@ -3,27 +3,23 @@ package com.gorshkov.movieland.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
+@Table(name = "poster")
 public class Poster {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long posterId;
-    private String movieName;
-    private String link;
+    private String picturePath;
+    private String nameRussian;
 
     @Override
     public boolean equals(Object o) {
@@ -40,5 +36,14 @@ public class Poster {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Poster{" +
+                "posterId=" + posterId +
+                ", picturePath='" + picturePath + '\'' +
+                ", nameRussian='" + nameRussian + '\'' +
+                '}';
     }
 }

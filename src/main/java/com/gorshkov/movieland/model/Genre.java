@@ -1,6 +1,5 @@
 package com.gorshkov.movieland.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,14 +14,14 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "genres")
 @RequiredArgsConstructor
+@Table(name = "genre")
 public class Genre implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long genreId;
-    private String genre;
+    private String name;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -30,7 +29,6 @@ public class Genre implements Serializable {
                     CascadeType.MERGE
             },
             mappedBy = "genres")
-    @JsonIgnore
     private Set<Movie> movies = new HashSet<>();
 
     @Override
@@ -54,6 +52,6 @@ public class Genre implements Serializable {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "genreId = " + genreId + ", " +
-                "genre = " + genre + ")";
+                "name = " + name + ")";
     }
 }
